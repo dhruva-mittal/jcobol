@@ -78,6 +78,24 @@ public class Employee {
     
     @CobolField(type = CobolFieldType.DECIMAL_ASSUMED, length = 7, scale = 2, comp3 = true)
     private BigDecimal salary;
+    
+    @CobolNestedObject
+    private Address address;
+}
+
+// Nested COBOL structure
+public class Address {
+    @CobolField(type = CobolFieldType.ALPHANUMERIC, length = 30)
+    private String street;
+    
+    @CobolField(type = CobolFieldType.ALPHANUMERIC, length = 20)
+    private String city;
+    
+    @CobolField(type = CobolFieldType.ALPHANUMERIC, length = 2)
+    private String state;
+    
+    @CobolField(type = CobolFieldType.ALPHANUMERIC, length = 5)
+    private String zipCode;
 }
 ```
 
@@ -103,6 +121,14 @@ employee.setName("John Doe");
 employee.setAge(42);
 employee.setSalary(new BigDecimal("65000.00"));
 
+// Set nested object
+Address address = new Address();
+address.setStreet("123 Main St");
+address.setCity("Springfield");
+address.setState("IL");
+address.setZipCode("62701");
+employee.setAddress(address);
+
 // Convert to binary format
 byte[] binaryData = CobolFieldProcessor.writeToBinary(employee);
 ```
@@ -121,6 +147,32 @@ byte[] binaryData = CobolFieldProcessor.writeToBinary(employee);
 - `signed`: Whether the field has a sign
 - `comp`: Binary format (COMP)
 - `comp3`: Packed decimal format (COMP-3)
+
+
+## Annotations
+
+### @CobolField
+Used to mark a field as a COBOL data field.
+
+```java
+@CobolField(
+    type = CobolFieldType.NUMERIC, 
+    length = 5, 
+    scale = 2,
+    signed = true,
+    comp3 = true,
+    description = "Amount field"
+)
+private BigDecimal amount;
+```
+
+### @CobolNestedObject
+Used to mark a field as a nested COBOL structure that contains its own COBOL fields.
+
+```java
+@CobolNestedObject(description = "Customer address information")
+private Address address;
+```
 
 
 ## Wanna Help?
