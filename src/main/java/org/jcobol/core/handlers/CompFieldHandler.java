@@ -32,7 +32,7 @@ public class CompFieldHandler {
         buffer.order(ByteOrder.BIG_ENDIAN); // COBOL typically uses big-endian
         
         // COMP fields are binary representations
-        int length = cobolField.length();
+        int length = calculator.calculateBinaryLength(cobolField);
         
         try {
             // Handle different field sizes
